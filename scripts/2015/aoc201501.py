@@ -1,45 +1,47 @@
-# part 01
-def net_floor(data):
-    count = {}
+'''
+Advent of Code
+Year 2015
+Day 01
+https://adventofcode.com/2015/day/1
+'''
+from collections import Counter
 
-    for n in data:
-        if n in count: 
-            count[n] += 1
-        else: 
-            count[n] = 1
+# Part 01
+def part_01(puzzle_input):
+    cnt = Counter(puzzle_input)
+    ups = cnt['(']
+    downs = cnt[')']
 
-    up = count['(']
-    down = count[')']
-    floor = up - down
-
-    return floor
+    return ups - downs
 
 
-# part 02
-def basement_position(data):
+# Part 02
+def part_02(puzzle_input):
     floor = 0
     position = 0
 
-    for n in data:
+    for command in puzzle_input:
         position += 1
         
-        if n == '(': 
+        if command == '(': 
             floor += 1
-        elif n == ')': 
+        elif command == ')': 
             floor -= 1
         
         if floor < 0:
             break
-    
+
     return position
 
 
+# Puzzle Input
 if __name__ == "__main__":
-    file = r"C:\Users\BBREWER2\Documents\MyDirectory\PythonScripts\dataFiles\advertofcode\advert201501.txt"
-
-    with open(file) as f:
-        data = f.readlines()
-        f.close()
-
-    print(f'Part_01: {net_floor(data[0])}')
-    print(f'Part_02: {basement_position(data[0])}')
+    file = r"..\..\inputs\2015\aoc201501.txt"
+    puzzle_input = open(file, 'r').read().split('\n')
+    puzzle_input = puzzle_input[0]
+    
+    solution = part_01(puzzle_input)
+    print(solution) # 280
+    
+    solution = part_02(puzzle_input)
+    print(solution) # 1797
