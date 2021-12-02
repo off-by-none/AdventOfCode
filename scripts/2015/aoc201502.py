@@ -1,37 +1,61 @@
-# part 01
-def calculate_total_wrapping_sqft(data):
-    total_wrapping = 0
-    total_ribbon = 0
+'''
+Advent of Code
+Year 2015
+Day 02
+https://adventofcode.com/2015/day/2
+'''
 
-    for gift in data:
-        gift = gift.strip('\n')
-        dimensions = gift.split('x')
-        dimensions = [int(x) for x in dimensions]
-        dimensions.sort()
-        areas = []
+# Part 01
+def part_01(puzzle_input):
+    total_wrapping_needed = 0
 
-        for d1 in range(0, len(dimensions) - 1):
-            for d2 in range(d1 + 1, len(dimensions)):
-                areas.append(int(dimensions[d1]) * int(dimensions[d2]))
+    for present in puzzle_input:
+        length = present[0]
+        width = present[1]
+        height = present[2]
 
-        bowtie = 1
-        for x in dimensions:
-            bowtie *= int(x)
-        
-        areas.sort()
-        total_wrapping += 2 * sum(areas) + areas[0]
-        total_ribbon += 2 * (dimensions[0] + dimensions[1]) + bowtie
+        side01 = length * width
+        side02 = width * height
+        side03 = height * length
 
-    return total_wrapping, total_ribbon
+        wrapping_needed = 2 * (side01 + side02 + side03)
+        slack = min(side01, side02, side03)
+
+        total_wrapping_needed += wrapping_needed + slack
+    
+    return total_wrapping_needed
 
 
+# Part 02
+def part_02(puzzle_input):
+    total_ribbon_needed = 0
+
+    for present in puzzle_input:
+        length = present[0]
+        width = present[1]
+        height = present[2]
+
+        perimeter01 = 2 * (length + width)
+        perimeter02 = 2 * (width + height)
+        perimeter03 = 2 * (height + length)
+
+        ribbon_needed = min(perimeter01, perimeter02, perimeter03)
+        bow = length * width * height
+
+        total_ribbon_needed += ribbon_needed + bow
+    
+    return total_ribbon_needed
+
+
+# Puzzle Input
 if __name__ == "__main__":
-    file = r"C:\Users\BBREWER2\Documents\MyDirectory\PythonScripts\dataFiles\advertofcode\advert201502.txt"
-
-    with open(file) as f:
-        data = f.readlines()
-        f.close()
-
-    total_wrapping, total_ribbon = calculate_total_wrapping_sqft(data)
-    print(total_wrapping)
-    print(total_ribbon)
+    file = r"..\..\inputs\2015\aoc201502.txt"
+    puzzle_input = open(file, 'r').read().split('\n')
+    puzzle_input = [x.split('x') for x in puzzle_input]
+    puzzle_input = [list(map(int, x)) for x in puzzle_input]
+    
+    solution = part_01(puzzle_input)
+    print(solution) # 1598415
+    
+    solution = part_02(puzzle_input)
+    print(solution) # 3812909
