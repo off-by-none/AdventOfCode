@@ -53,10 +53,7 @@ if __name__ == "__main__":
     puzzle_input = open(file, 'r').read().split('\n')
     
     solution = part_01(puzzle_input)
-    print(solution)
+    print(solution) # 1524750
     
     solution = part_02(puzzle_input)
-    print(solution)
-
-    # 1524750
-    # 1592426537
+    print(solution) # 1592426537
