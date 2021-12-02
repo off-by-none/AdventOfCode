@@ -5,32 +5,58 @@ Day 02
 https://adventofcode.com/2021/day/2
 '''
 
-import math
-import pandas as pd
-import itertools as it
-import numpy as np
-from functools import reduce
-import re
-
-
 # PART 1
 def part_01(puzzle_input):
-    return True
+    position = 0
+    depth = 0
+    
+    for command in puzzle_input:
+        command = command.split(' ')
+        direction = command[0]
+        units = int(command[1])
+        
+        if direction == 'forward':
+            position += units
+        elif direction == 'down':
+            depth += units
+        elif direction == 'up':
+            depth -= units
+
+    return position * depth
 
 
 # PART 2
 def part_02(puzzle_input):
-    return True
+    position = 0
+    depth = 0
+    aim = 0
+    
+    for command in puzzle_input:
+        command = command.split(' ')
+        direction = command[0]
+        units = int(command[1])
+        
+        if direction == 'forward':
+            position += units
+            depth += units * aim
+        elif direction == 'down':
+            aim += units
+        elif direction == 'up':
+            aim -= units
+
+    return position * depth
 
 
 # Get Input
 if __name__ == "__main__":
-    file = r"C:\Users\BBREWER2\Documents\MyDirectory\AdventOfCode\inputs\2021\aoc202102.txt"
+    file = r"..\..\inputs\2021\aoc202102.txt"
     puzzle_input = open(file, 'r').read().split('\n')
-    puzzle_input = list(map(int, puzzle_input))
     
     solution = part_01(puzzle_input)
     print(solution)
     
     solution = part_02(puzzle_input)
     print(solution)
+
+    # 1524750
+    # 1592426537
