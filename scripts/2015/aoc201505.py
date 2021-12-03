@@ -1,66 +1,98 @@
-def check_is_nice_1(data):
-    nice_count = 0
+'''
+Advent of Code
+Year 2015
+Day 05
+https://adventofcode.com/2015/day/5
+TODO: Should just use regex.
+'''
 
-    for string in data:
-        string = string.strip('\n')
-        vowels = 0
-        double_char = 0
-        bad_string = 0
-        previous_char = ''
+# PART01
+def part_01(puzzle_input):
+    total_nice_strings = 0
+
+    for input in puzzle_input:
+        if contains_three_or_more_vowels(input) and contains_double_letters(input) and not contains_bad_strings(input):
+            total_nice_strings += 1
+
+    return total_nice_strings
+
+
+# PART02
+def part_02(puzzle_input):
+    total_nice_strings = 0
+
+    for input in puzzle_input:
+        if contains_repeating_pairs(input) and contains_middle_letter(input):
+            total_nice_strings += 1
+
+    return total_nice_strings
+
+
+def contains_three_or_more_vowels(string):
+    total_vowels = 0
+    vowels = ['a', 'e', 'i', 'o', 'u']
     
-        for l in string:
-            if l in ['a', 'e', 'i', 'o', 'u']: 
-                vowels += 1
-            
-            if l == previous_char:
-                double_char += 1
-            
-            if previous_char + l in ['ab', 'cd', 'pq', 'xy']:
-                bad_string += 1
-
-            previous_char = l
-        
-        if vowels >= 3 and double_char > 0 and bad_string == 0:
-            nice_count += 1
-
-    return nice_count
+    for letter in string:
+        if letter in vowels:
+            total_vowels += 1
+    
+    return total_vowels >= 3
 
 
-def check_is_nice_2(data):
-    nice_count = 0
+def contains_double_letters(string):
+    previous_letter = ''
+    
+    for letter in string:
+        if letter == previous_letter:
+            return True
+        previous_letter = letter
+    
+    return False
 
-    for string in data:
-        string = string.strip('\n')
-        hasRepeatingPair = False
-        hasMiddleChar = False
 
-        pairs = []
-        for i in range(len(string) - 1):
-            pairs.append(string[i] + string[i + 1])
-        
-        for x in range(len(pairs) - 2):
-            for y in range(x + 2, len(pairs)):
-                if pairs[x] == pairs[y]:
-                    hasRepeatingPair = True
-                    break
-        
-        for i in range(len(pairs) - 1):
-            if pairs[i][0] == pairs[i + 1][1]:
-                hasMiddleChar = True
-                break
-        
-        if hasRepeatingPair and hasMiddleChar:
-            nice_count += 1
+def contains_bad_strings(string):
+    previous_letter = ''
+    bad_strings = ['ab', 'cd', 'pq', 'xy']
+    
+    for letter in string:
+        if previous_letter + letter in bad_strings:
+            return True
+        previous_letter = letter
 
-    return nice_count
+    return False
+
+
+def contains_repeating_pairs(string):
+    pairs = []
+    for i in range(len(string) - 1):
+        pairs.append(string[i] + string[i + 1])
+    
+    for x in range(len(pairs) - 2):
+        for y in range(x + 2, len(pairs)):
+            if pairs[x] == pairs[y]:
+                return True
+    
+    return False
+
+
+def contains_middle_letter(string):
+    pairs = []
+    for i in range(len(string) - 1):
+        pairs.append(string[i] + string[i + 1])
+
+    for i in range(len(pairs) - 1):
+        if pairs[i][0] == pairs[i + 1][1]:
+            return True
+
+    return False
 
 
 if __name__ == "__main__":
-    file = r"C:\Users\BBREWER2\Documents\MyDirectory\PythonScripts\dataFiles\advertofcode\advert201505.txt"
-
-    with open(file) as f:
-        data = f.readlines()
-        f.close()
-
-    print(check_is_nice_2(data))
-        
+    file = r"..\..\inputs\2015\aoc201505.txt"
+    puzzle_input = open(file, 'r').read().split('\n')
+    
+    solution = part_01(puzzle_input)
+    print(solution) # 236
+    
+    solution = part_02(puzzle_input)
+    print(solution) # 51

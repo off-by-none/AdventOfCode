@@ -1,31 +1,16 @@
-def format_instructions(data):
-    instructions = []
-    for instruction in data:
-        build_instruction = []
-        instruction = instruction.strip("\n")
-        instruction = instruction.split(" ")
-        
-        if "turn" in instruction:
-            instruction.remove("turn")
-        
-        start = instruction[1].split(",")
-        end = instruction[3].split(",")
+'''
+Advent of Code
+Year 2015
+Day 06
+https://adventofcode.com/2015/day/6
+TODO: use regex
+'''
 
-        build_instruction.append(instruction[0])
-        build_instruction.append(int(start[0]))
-        build_instruction.append(int(start[1]))
-        build_instruction.append(int(end[0]))
-        build_instruction.append(int(end[1]))
-        
-        instructions.append(build_instruction)
-
-    return instructions
-
-
-def plug_in_lights(instructions):
+# PART01
+def part_01(puzzle_input):
     lights = [[0 for x in range(1000)] for y in range(1000)]
     lights_on_count = 0
-    for instruction in instructions:
+    for instruction in puzzle_input:
         action = instruction[0]
         
         if action == "toggle":
@@ -51,10 +36,11 @@ def plug_in_lights(instructions):
     return lights_on_count
 
 
-def plug_in_lights_p2(instructions):
+# PART02
+def part_02(puzzle_input):
     lights = [[0 for x in range(1000)] for y in range(1000)]
     brightness = 0
-    for instruction in instructions:
+    for instruction in puzzle_input:
         action = instruction[0]
         
         if action == "toggle":
@@ -78,14 +64,36 @@ def plug_in_lights_p2(instructions):
     return brightness
 
 
-if __name__ == "__main__":
-    file = r"C:\Users\BBREWER2\Documents\MyDirectory\PythonScripts\dataFiles\advertofcode\advert201506.txt"
-
-    with open(file) as f:
-        data = f.readlines()
-        f.close()
-
-    instructions = format_instructions(data)
-    #print(plug_in_lights(instructions))
-    print(plug_in_lights_p2(instructions))
+def format_input(input):
+    formatted_input = []
+    for instruction in input:
+        build_instruction = []
+        instruction = instruction.split(" ")
         
+        if "turn" in instruction:
+            instruction.remove("turn")
+        
+        start = instruction[1].split(",")
+        end = instruction[3].split(",")
+
+        build_instruction.append(instruction[0])
+        build_instruction.append(int(start[0]))
+        build_instruction.append(int(start[1]))
+        build_instruction.append(int(end[0]))
+        build_instruction.append(int(end[1]))
+        
+        formatted_input.append(build_instruction)
+
+    return formatted_input
+
+
+if __name__ == "__main__":
+    file = r"..\..\inputs\2015\aoc201506.txt"
+    puzzle_input = open(file, 'r').read().split('\n')
+    puzzle_input = format_input(puzzle_input)
+
+    solution = part_01(puzzle_input)
+    print(solution) # 543903
+    
+    solution = part_02(puzzle_input)
+    print(solution) # 14687245
